@@ -28,7 +28,6 @@ const Register = () => {
                   <input
                     type="text"
                     placeholder="Name"
-                    v-model="form.name"
                     className="
                       border-[#E9EDF4]
                       w-full
@@ -49,7 +48,6 @@ const Register = () => {
                   <input
                     type="email"
                     placeholder="Email"
-                    v-model="form.email"
                     className="
                       border-[#E9EDF4]
                       w-full
@@ -70,7 +68,6 @@ const Register = () => {
                   <input
                     type="password"
                     placeholder="Password"
-                    v-model="form.password"
                     className="
                       border-[#E9EDF4]
                       w-full
@@ -91,7 +88,6 @@ const Register = () => {
                   <input
                     type="password"
                     placeholder="Password Confirmation"
-                    v-model="form.password_confirmation"
                     className="
                       border-[#E9EDF4]
                       w-full

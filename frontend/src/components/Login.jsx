@@ -1,7 +1,34 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from '../api/axios';
 
-const Login = () => {
+const Login = () => {   
+  // States for email and password
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Used to navigate to other routes after login
+
+  // Handle form submission
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    // Reset error message
+    setError(null);
+
+      try {
+        await axios.post('/login', { email, password });
+        console.log("Connexion réussie :", response.data);
+        setEmail("")
+        setPassword("")
+        navigate("/");
+        // Gérer la réponse après la connexion
+      } catch (e) {
+        console.error("Erreur lors de la connexion :", e);
+      }
+  };
+
+
   return (
     <section className="bg-[#F4F7FF] py-20 lg:py-[120px]">
       <div className="container mx-auto">
@@ -23,11 +50,14 @@ const Login = () => {
               "
             >
               <div className="mb-10 text-center md:mb-16">Laraveller</div>
-              <form>
+              {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
+              <form onSubmit={handleLogin}>
                 <div className="mb-6">
                   <input
                     type="email"
                     placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="
                       border-[#E9EDF4]
                       w-full
@@ -48,6 +78,8 @@ const Login = () => {
                   <input
                     type="password"
                     placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="
                       border-[#E9EDF4]
                       w-full
@@ -93,7 +125,7 @@ const Login = () => {
                 Forgot Password?
               </Link>
               <p className="text-base text-[#adadad]">
-                Not a member yet?
+                Not a member yet?{' '}
                 <Link to="/register" className="text-primary hover:underline">
                   Sign Up
                 </Link>
