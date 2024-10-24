@@ -1,7 +1,45 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from '../api/axios';
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [password_confirmation, setPasswordConfirmation] = useState(""); // Utilisation de password_confirmation avec underscore
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Utilisé pour naviguer vers d'autres routes après l'inscription
+
+  // Gestion de la soumission du formulaire
+  const handleRegister = async (event) => {
+    event.preventDefault();
+    setError(null); // Réinitialiser le message d'erreur
+
+    // Vérification de la correspondance des mots de passe
+    if (password !== password_confirmation) { // Utilisation de password_confirmation
+      setError("Les mots de passe ne correspondent pas.");
+      return;
+    }
+
+    try {
+      const response = await axios.post('/register', { 
+        name, 
+        email, 
+        password, 
+        password_confirmation // Utilisation de password_confirmation
+      });
+      console.log("Inscription réussie :", response.data);
+      setName("");
+      setEmail("");
+      setPassword("");
+      setPasswordConfirmation(""); // Réinitialiser le champ password_confirmation
+      navigate("/login"); // Rediriger vers la page de connexion après l'inscription réussie
+    } catch (e) {
+      console.error("Erreur lors de l'inscription :", e);
+      setError("Échec de l'inscription. Veuillez réessayer."); // Gérer l'erreur
+    }
+  };
+
   return (
     <section className="bg-[#F4F7FF] py-20 lg:py-[120px]">
       <div className="container mx-auto">
@@ -23,11 +61,14 @@ const Register = () => {
               "
             >
               <div className="mb-10 text-center md:mb-16">Laraveller</div>
-              <form onSubmit={(e) => { e.preventDefault(); authStore.handleRegister(form); }}>
+              {error && <p className="text-red-500">{error}</p>} {/* Afficher le message d'erreur */}
+              <form onSubmit={handleRegister}>
                 <div className="mb-6">
                   <input
                     type="text"
                     placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="
                       border-[#E9EDF4]
                       w-full
@@ -48,6 +89,8 @@ const Register = () => {
                   <input
                     type="email"
                     placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="
                       border-[#E9EDF4]
                       w-full
@@ -68,6 +111,8 @@ const Register = () => {
                   <input
                     type="password"
                     placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="
                       border-[#E9EDF4]
                       w-full
@@ -88,6 +133,8 @@ const Register = () => {
                   <input
                     type="password"
                     placeholder="Password Confirmation"
+                    value={password_confirmation} // Utilisation de password_confirmation
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
                     className="
                       border-[#E9EDF4]
                       w-full

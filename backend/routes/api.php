@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::middleware(['api'])->get('/csrf-token', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+
+// Route pour obtenir les informations de l'utilisateur authentifié
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Route pour la connexion
+Route::post('/login', [AuthController::class, 'login']);

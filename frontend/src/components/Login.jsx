@@ -12,21 +12,23 @@ const Login = () => {
   // Handle form submission
   const handleLogin = async (event) => {
     event.preventDefault();
-
+  
     // Reset error message
     setError(null);
-
-      try {
-        await axios.post('/login', { email, password });
-        console.log("Connexion réussie :", response.data);
-        setEmail("")
-        setPassword("")
-        navigate("/");
-        // Gérer la réponse après la connexion
-      } catch (e) {
-        console.error("Erreur lors de la connexion :", e);
-      }
+  
+    try {
+      const response = await axios.post('/login', { email, password }); // Ajout de `const response =`
+      console.log("Connexion réussie :", response.data);
+      setEmail("");
+      setPassword("");
+      navigate("/");
+      // Gérer la réponse après la connexion
+    } catch (e) {
+      console.error("Erreur lors de la connexion :", e);
+      setError("Échec de la connexion. Veuillez vérifier vos identifiants."); // Gérer l'erreur
+    }
   };
+  
 
 
   return (
