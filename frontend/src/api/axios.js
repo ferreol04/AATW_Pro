@@ -6,23 +6,5 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Récupération du jeton CSRF
-const getCsrfToken = async () => {
-  try {
-    const response = await api.get('/csrf-token');
-    return response.data.csrf_token;
-  } catch (error) {
-    console.error("Erreur lors de la récupération du jeton CSRF :", error);
-  }
-};
-
-// Ajoutez un intercepteur pour ajouter le jeton CSRF à chaque requête
-api.interceptors.request.use(async (config) => {
-  const csrfToken = await getCsrfToken();
-  if (csrfToken) {
-    config.headers['X-CSRF-TOKEN'] = csrfToken; // Ajout du jeton CSRF
-  }
-  return config;
-});
 
 export default api;

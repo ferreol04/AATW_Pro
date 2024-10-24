@@ -15,19 +15,16 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware(['api'])->get('/csrf-token', function () {
-    return response()->json(['csrf_token' => csrf_token()]);
-});
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 
-// Route pour obtenir les informations de l'utilisateur authentifié
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route pour l'inscription
+Route::post('/register', [AuthController::class, 'register']);
 
 // Route pour la connexion
 Route::post('/login', [AuthController::class, 'login']);
+
+// Route pour la déconnexion (nécessite l'authentification)
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+
+
