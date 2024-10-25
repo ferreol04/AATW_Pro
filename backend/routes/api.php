@@ -22,3 +22,14 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
 
+
+// Routes pour l'Enfant
+Route::post('/enfant/create', [EnfantController::class, 'create']);
+
+// Routes pour la Classe
+Route::post('/classe/create', [ClasseController::class, 'create']);
+
+// Routes pour l'Établissement
+Route::post('/etablissement/create', [EtablissementController::class, 'create']);
+
+
