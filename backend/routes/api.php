@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,16 +16,9 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-
-
-// Route pour l'inscription
-Route::post('/register', [AuthController::class, 'register']);
-
-// Route pour la connexion
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+    return $request->user();
+});
 Route::post('/login', [AuthController::class, 'login']);
-
-// Route pour la déconnexion (nécessite l'authentification)
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-
-
+Route::post('/register', [UserController::class, 'register']);
 
